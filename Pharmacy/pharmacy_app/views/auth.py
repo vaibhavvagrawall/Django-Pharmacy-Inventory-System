@@ -1,10 +1,10 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.template import loader
 from django.views.generic import View, TemplateView, CreateView, UpdateView, DeleteView
 from django.contrib.auth import authenticate,login
-from .forms import UserRegisterForm, PharmacyItemForm
+from .forms import UserRegisterForm, PharmacyItemForm, CategoryForm
 from pharmacy_app.models import PharmacyItem, Category
 from django.contrib.auth.mixins import LoginRequiredMixin
 from Pharmacy.settings import LOW_QUANTITY
@@ -18,25 +18,17 @@ def pharmacy_view(request):
     template=loader.get_template('index.html')
     return HttpResponse(template.render())
 
-class Dashboard(LoginRequiredMixin,View):
-    def get(self,request):
+class Dashboard(LoginRequiredMixin, View):
+    def get(self, request):
         items = PharmacyItem.objects.filter(user=self.request.user.id).order_by('id')
-        low_inventory = PharmacyItem.objects.filter(
-			user=self.request.user.id,
-			quantity__lte=LOW_QUANTITY
-		)
-        if low_inventory.count() > 0:
-            if low_inventory.count() > 1:
-                messages.error(request, f'{low_inventory.count()} items have low inventory')
-            else:
-                messages.error(request, f'{low_inventory.count()} item has low inventory')
-		
-        low_inventory_ids = PharmacyItem.objects.filter(
-			user=self.request.user.id,
-			quantity__lte=LOW_QUANTITY
-		).values_list('id', flat=True)
+        categories = Category.objects.all()
 
-        return render(request,'dashboard.html',{'items':items})
+        # Generate sequential numbers for items and categories
+        items_with_sno = enumerate(items, start=1)
+        categories_with_sno = enumerate(categories, start=1)
+
+        return render(request, 'dashboard.html', {'items_with_sno': items_with_sno, 'categories_with_sno': categories_with_sno})
+
 
 class SignUpView(View):
     def get(self,request):
@@ -86,3 +78,35 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
     email_template_name = 'passwordresetemail.html'
     subject_template_name = 'passwordresetsubject.txt'
     success_url = reverse_lazy('pharmacy_view')
+
+def add_category(request):
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard') 
+    else:
+        form = CategoryForm()
+    return render(request, 'addcategory.html', {'form': form})
+
+def delete_category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    if request.method == 'POST':
+        # Delete all items related to this category
+        PharmacyItem.objects.filter(category=category).delete()
+        # Delete the category itself
+        category.delete()
+        return redirect('dashboard')
+    return render(request, 'deletecategory.html', {'category': category})
+
+class EditCategory(UpdateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = 'editcategory.html'
+    success_url = reverse_lazy('dashboard')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'Edit Category'
+        return context
+

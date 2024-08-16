@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-11 col-md-4 mx-auto mt-5">
             <h1>Pharmacy Inventory Items</h1>
-            <form method="POST">
+            <form method="POST" >
                 {% csrf_token %}
                 {{form|crispy}}
                 <div class="mt-3">

@@ -14,3 +14,8 @@ class PharmacyItemForm(forms.ModelForm):
     class Meta:
         model=PharmacyItem
         fields=['name','company','quantity','category']
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name']
