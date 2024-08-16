@@ -1,3 +1,6 @@
 # Django-Pharmacy-Inventory-System
-This is a Web Development project which uses HTML and Bootstrap for its frontend and Python and its Django framework as the backend. It also uses MongoDB for storing the data models.
-Here, Project1 is the virtual enviornment and Pharmacy is the Django project. Inside the Pharmacy project, Pharmacy_app is the Django app.
+This is a Web Development project which uses HTML and Bootstrap for its frontend and Python and its Django framework as the backend. It also uses MySQL for storing the data models.
+Virtual environment is inside the Pharmacy directory. 
+Pharmacy -> Project Name 
+pharma_env -> Virtual Envronment
+Pharmacy_app -> Django App.
