@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Display messages -->
+    {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Hero Section -->
+    <div class="row align-items-center text-center">
+        <div class="col-lg-12">
+            <h1 class="display-4 fw-bold text-primary">Welcome to Pharmacy Inventory</h1>
+            <p class="lead text-muted">Effortlessly manage and monitor your pharmacy's inventory with ease. Stay updated with low stock alerts and ensure you never run out of essential items.</p>
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-primary btn-lg mt-4">Get Started</a>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row text-center mt-5">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-box-seam display-4 text-primary"></i>
+                    <h5 class="card-title mt-3">Easy Management</h5>
+                    <p class="card-text">Organize and track your pharmacy items with just a few clicks.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mt-4 mt-md-0">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-bell-fill display-4 text-primary"></i>
+                    <h5 class="card-title mt-3">Low Stock Alerts</h5>
+                    <p class="card-text">Receive timely alerts when stock levels are low, ensuring you're always prepared.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mt-4 mt-md-0">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-file-earmark-text-fill display-4 text-primary"></i>
+                    <h5 class="card-title mt-3">Real-Time Updates</h5>
+                    <p class="card-text">Get instant updates on inventory changes and stock levels.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials Section -->
+    <div class="row mt-5">
+        <div class="col-12 text-center">
+            <h2 class="fw-bold text-primary">What Our Users Say</h2>
+        </div>
+        <div class="col-md-6 mt-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <p class="card-text">"This inventory system has revolutionized the way we manage our pharmacy. It's incredibly user-friendly and efficient!"</p>
+                    <footer class="blockquote-footer">John Doe, <cite title="Company">Pharmacy Manager</cite></footer>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mt-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <p class="card-text">"I can now track all my inventory levels in real-time. This tool has saved us so much time and effort."</p>
+                    <footer class="blockquote-footer">Jane Smith, <cite title="Company">Pharmacist</cite></footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

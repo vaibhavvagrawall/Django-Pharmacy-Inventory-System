@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% if messages %}
+    <div class="row mt-3">
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <div class="col-md-10 col-12 mx-auto alert alert-danger">
+                    {{ message }}
+                </div>
+            {% else %}
+                <div class="col-md-10 col-12 mx-auto alert alert-success">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if alerts %}
+    <div class="row mt-3">
+        {% for alert in alerts %}
+            <div class="col-md-10 col-12 mx-auto alert alert-warning">
+                {{ alert }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if user.is_authenticated %}
+    <div class="row">
+        <div class="col-md-10 col-12 mx-auto mt-5">
+
+            <!-- Items Table -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3>Items</h3>
+                <a href="{% url 'add-item' %}" class="btn btn-outline-success">
+                    <i class="bi bi-plus-circle me-2"></i>Add Item
+                </a>
+            </div>
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">SNo</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Company</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Price</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if items_with_sno %}
+                        {% for sno, item in items_with_sno %}
+                            <tr>
+                                <th scope="row">{{ sno }}</th>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.company }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.category.name }}</td>
+                                <td>{{ item.price }}</td>
+                                <td>
+                                    <a href="{% url 'edit-item' item.id %}" class="btn btn-outline-warning">
+                                        <i class="bi bi-pencil me-2"></i>Edit
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'delete-item' item.id %}" class="btn btn-outline-danger">
+                                        <i class="bi bi-trash me-2"></i>Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center">No items found</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+
+            <!-- Add Space Between Tables -->
+            <div class="my-5"></div>
+
+            <!-- Categories Table -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3>Categories</h3>
+                <a href="{% url 'add-category' %}" class="btn btn-outline-success">
+                    <i class="bi bi-tags me-2"></i>Add Category
+                </a>
+            </div>
+            <table class="table table-hover table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">SNo</th>
+                        <th scope="col">Name</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if categories_with_sno %}
+                        {% for sno, category in categories_with_sno %}
+                            <tr>
+                                <th scope="row">{{ sno }}</th>
+                                <td>{{ category.name }}</td>
+                                <td>
+                                    <a href="{% url 'edit-category' category.id %}" class="btn btn-outline-warning">
+                                        <i class="bi bi-pencil me-2"></i>Edit
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'delete-category' category.id %}" class="btn btn-outline-danger">
+                                        <i class="bi bi-trash me-2"></i>Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center">No categories found</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% else %}
+    <div class="row">
+        <div class="col-11 col-md-4 mx-auto mt-5">
+            <h3>You Have Not Logged In</h3>
+            <div class="border-top pt-3"></div>
+            <big class="text-muted">
+                <a href="{% url 'login' %}" class="ml-2">Log In</a>
+            </big>
+        </div>
+    </div>
+{% endif %}
+{% endblock content %}

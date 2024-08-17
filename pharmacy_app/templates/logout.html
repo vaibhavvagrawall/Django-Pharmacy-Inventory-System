@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Log Out Confirmation</h1>
+    <div class="row">
+        <form method="post" class="col-sm-11 col-md-4 mx-auto mt-5">
+            {% csrf_token %}
+            <div class="card border-0 shadow-sm rounded p-3">
+                <h1 class="fw-light text-center">Are you sure you want to log out?</h1>
+                <p class="text-center fw-light">You will be logged out of your account, and any unsaved changes will be lost.</p>
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-outline-danger">Log Out</button>
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
