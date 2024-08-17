@@ -81,7 +81,7 @@ pymysql.install_as_MySQLdb()
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'mysql.connector.django',
         'NAME': 'PHARMACY_INVENTORY',
         'USER': 'root',
         'PASSWORD': 'bANSAL1809',
