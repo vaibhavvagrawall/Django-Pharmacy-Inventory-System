@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-&xx@bhmyf^b@69w&czr*9hu@9j@c+z@z8u9!t#qprge=eapp&8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.vercel.app', 'https://django-pharmacy-inventory-system.vercel.app/']
+ALLOWED_HOSTS = ['.vercel.app', 'django-pharmacy-inventory-system.vercel.app']
 
 
 # Application definition
@@ -127,6 +127,9 @@ EMAIL_HOST_PASSWORD = 'niji ghpl ctlc tikq'
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
