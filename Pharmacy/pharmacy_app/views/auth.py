@@ -9,7 +9,7 @@ from pharmacy_app.models import PharmacyItem, Category
 from django.contrib.auth.mixins import LoginRequiredMixin
 from Pharmacy.settings import LOW_QUANTITY
 from django.contrib import messages
-from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
@@ -148,11 +148,24 @@ class DeleteItem(LoginRequiredMixin,DeleteView):
         messages.success(request, 'Item deleted successfully!')
         return response
 
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'passwordresetconfirm.html'
+    success_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Your password has been successfully changed!')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'There was an error resetting your password. Please try again.')
+        return super().form_invalid(form)
+
 class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
     template_name = 'passwordreset.html'
     email_template_name = 'passwordresetemail.html'
     subject_template_name = 'passwordresetsubject.txt'
     success_url = reverse_lazy('pharmacy_view')
+    success_message = "A password reset email has been sent. Please check your email for further instructions."
 
 def add_category(request):
     if request.method == 'POST':
