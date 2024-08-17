@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&xx@bhmyf^b@69w&czr*9hu@9j@c+z@z8u9!t#qprge=eapp&8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app', 'django-pharmacy-inventory-system.vercel.app']
+ALLOWED_HOSTS = ['.vercel.app', 'django-pharmacy-inventory-system.vercel.app', '.now.sh']
 
 
 # Application definition
@@ -142,3 +142,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 LOGIN_REDIRECT_URL = '/dashboard'
 LOGIN_URL = 'login'
+
+import os
+STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
