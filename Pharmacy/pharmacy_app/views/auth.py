@@ -7,7 +7,6 @@ from django.contrib.auth import authenticate,login, update_session_auth_hash, ge
 from .forms import UserRegisterForm, PharmacyItemForm, CategoryForm, UserUpdateForm
 from pharmacy_app.models import PharmacyItem, Category
 from django.contrib.auth.mixins import LoginRequiredMixin
-from Pharmacy.settings import LOW_QUANTITY
 from django.contrib import messages
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -85,14 +84,22 @@ def logout_user(request):
 
 class Dashboard(LoginRequiredMixin, View):
     def get(self, request):
+        threshold = 10
         items = PharmacyItem.objects.filter(user=self.request.user.id).order_by('id')
         categories = Category.objects.all()
         
-
         items_with_sno = enumerate(items, start=1)
         categories_with_sno = enumerate(categories, start=1)
-
-        return render(request, 'dashboard.html', {'items_with_sno': items_with_sno, 'categories_with_sno': categories_with_sno})
+        
+        # Prepare alerts
+        low_stock_alerts = [item for item in items if item.quantity < threshold]
+        alerts = [f"Alert: The quantity of '{item.name}' is low ({item.quantity})!" for item in low_stock_alerts]
+        
+        return render(request, 'dashboard.html', {
+            'items_with_sno': items_with_sno,
+            'categories_with_sno': categories_with_sno,
+            'alerts': alerts
+        })
 
 class AddItem(LoginRequiredMixin, CreateView):
     model = PharmacyItem
