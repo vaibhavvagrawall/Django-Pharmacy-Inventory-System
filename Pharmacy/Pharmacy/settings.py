@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&xx@bhmyf^b@69w&czr*9hu@9j@c+z@z8u9!t#qprge=eapp&8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['.vercel.app', 'https://django-pharmacy-inventory-system.vercel.app/']
 
