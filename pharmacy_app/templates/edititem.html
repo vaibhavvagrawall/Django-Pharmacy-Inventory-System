@@ -2,18 +2,26 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="container mt-5">
-    <a href="{% url 'dashboard' %}" class="btn btn-outline-primary mb-4">Go Back</a>
+<div class="container mt-4 mb-5">
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-primary btn-lg px-4 py-2">Go Back</a>
     <div class="row justify-content-center">
-        <div class="col-12 col-sm-10 col-md-8 col-lg-6">
-            <h1 class="text-center mb-4">Pharmacy Inventory Items</h1>
-            <form method="POST">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-outline-warning">Edit</button>
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="card border-light shadow-lg">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h2 class="mb-0">Edit Item</h2>
                 </div>
-            </form>
+                <div class="card-body p-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-outline-primary btn-lg px-4 py-2 w-100">
+                                Edit Item
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>

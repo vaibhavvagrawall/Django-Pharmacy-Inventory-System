@@ -1,9 +1,9 @@
-from django.shortcuts import render,redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.template import loader
-from django.views.generic import View, TemplateView, CreateView, UpdateView, DeleteView
-from django.contrib.auth import authenticate,login, update_session_auth_hash, get_user_model, logout
+from django.views.generic import View, CreateView, UpdateView, DeleteView
+from django.contrib.auth import authenticate, login, update_session_auth_hash, logout
 from .forms import UserRegisterForm, PharmacyItemForm, CategoryForm, UserUpdateForm
 from pharmacy_app.models import PharmacyItem, Category
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,7 +15,6 @@ from django.contrib.auth.decorators import login_required
 
 def pharmacy_view(request):
     user = request.user
-    print(user)
     template = loader.get_template('index.html')
     context = {
         'messages': messages.get_messages(request),
@@ -43,7 +42,7 @@ def update_profile(request):
         form = UserUpdateForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Your profile has been updated successfully!')
+            messages.success(request, 'Your profile has been updated successfully!', extra_tags='action')
             return redirect('profile')
     else:
         form = UserUpdateForm(instance=request.user)
@@ -56,7 +55,7 @@ def change_password_view(request):
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
-            messages.success(request, 'Your password has been updated successfully.')
+            messages.success(request, 'Your password has been updated successfully.', extra_tags='action')
             return redirect('profile')
     else:
         form = PasswordChangeForm(request.user)
@@ -67,8 +66,8 @@ def delete_user(request):
     if request.method == 'POST':
         user = request.user
         user.delete()
-        messages.success(request, 'Your account has been deleted.')
-        return redirect('pharmacy_view')  # Redirect to a different view or page after deletion
+        messages.success(request, 'Your account has been deleted.', extra_tags='action')
+        return redirect('pharmacy_view')
     return render(request, 'deleteuser.html')
 
 @login_required
@@ -76,23 +75,22 @@ def logout_user(request):
     """Handle the logout process and display a confirmation page."""
     if request.method == 'POST':
         logout(request)
-        messages.info(request, 'You have been logged out successfully.')
-        return redirect('pharmacy_view')  # Redirect to the homepage or another page
+        messages.info(request, 'You have been logged out successfully.', extra_tags='action')
+        return redirect('pharmacy_view') 
     
-    # If accessed via GET, show confirmation page
     return render(request, 'logout.html')
 
 class Dashboard(LoginRequiredMixin, View):
     def get(self, request):
         threshold = 10
-        items = PharmacyItem.objects.filter(user=self.request.user.id).order_by('id')
-        categories = Category.objects.all()
+        items = PharmacyItem.objects.filter(user=self.request.user).order_by('id')
+        categories = Category.objects.filter(user=self.request.user)
         
         items_with_sno = enumerate(items, start=1)
         categories_with_sno = enumerate(categories, start=1)
         
         # Prepare alerts
-        low_stock_alerts = [item for item in items if item.quantity < threshold]
+        low_stock_alerts = [item for item in items if item.quantity <= threshold]
         alerts = [f"Alert: The quantity of '{item.name}' is low ({item.quantity})!" for item in low_stock_alerts]
         
         return render(request, 'dashboard.html', {
@@ -109,34 +107,34 @@ class AddItem(LoginRequiredMixin, CreateView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user  # Pass the user to the form
+        kwargs['user'] = self.request.user
         return kwargs
 
     def form_valid(self, form):
-        form.instance.user = self.request.user  # Set the user for the PharmacyItem
+        form.instance.user = self.request.user
         response = super().form_valid(form)
-        messages.success(self.request, 'Item added successfully!')
+        messages.success(self.request, 'Item added successfully!', extra_tags='action')
         return response
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.filter(user=self.request.user)  # Filter categories by the current user
+        context['categories'] = Category.objects.filter(user=self.request.user)
         return context
 
-class EditItem(LoginRequiredMixin,UpdateView):
-    model=PharmacyItem
-    form_class=PharmacyItemForm
-    template_name='edititem.html'
-    success_url=reverse_lazy('dashboard')
+class EditItem(LoginRequiredMixin, UpdateView):
+    model = PharmacyItem
+    form_class = PharmacyItemForm
+    template_name = 'edititem.html'
+    success_url = reverse_lazy('dashboard')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user  # Pass the user to the form
+        kwargs['user'] = self.request.user
         return kwargs
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, 'Item updated successfully!')
+        messages.success(self.request, 'Item updated successfully!', extra_tags='action')
         return response
     
     def get_context_data(self, **kwargs):
@@ -144,15 +142,15 @@ class EditItem(LoginRequiredMixin,UpdateView):
         context['categories'] = Category.objects.filter(user=self.request.user)  # Filter categories by the current user
         return context
 
-class DeleteItem(LoginRequiredMixin,DeleteView):
-    model=PharmacyItem
-    template_name='deleteitem.html'
-    success_url=reverse_lazy('dashboard')
-    context_object_name='item'
+class DeleteItem(LoginRequiredMixin, DeleteView):
+    model = PharmacyItem
+    template_name = 'deleteitem.html'
+    success_url = reverse_lazy('dashboard')
+    context_object_name = 'item'
 
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
-        messages.success(request, 'Item deleted successfully!')
+        messages.success(request, 'Item deleted successfully!', extra_tags='action')
         return response
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
@@ -160,7 +158,7 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     success_url = reverse_lazy('login')
 
     def form_valid(self, form):
-        messages.success(self.request, 'Your password has been successfully changed!')
+        messages.success(self.request, 'Your password has been successfully changed!', extra_tags='action')
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -181,18 +179,18 @@ def add_category(request):
             category = form.save(commit=False)
             category.user = request.user
             category.save()
-            messages.success(request, 'Category added successfully!')
+            messages.success(request, 'Category added successfully!', extra_tags='action')
             return redirect('dashboard') 
     else:
         form = CategoryForm()
     return render(request, 'addcategory.html', {'form': form})
 
 def delete_category(request, category_id):
-    category = get_object_or_404(Category, id=category_id)
+    category = get_object_or_404(Category, id=category_id, user=request.user)
     if request.method == 'POST':
         PharmacyItem.objects.filter(category=category).delete()
         category.delete()
-        messages.success(request, 'Category and associated items deleted successfully!')
+        messages.success(request, 'Category and associated items deleted successfully!', extra_tags='action')
         return redirect('dashboard')
     return render(request, 'deletecategory.html', {'category': category})
 
@@ -202,12 +200,15 @@ class EditCategory(UpdateView):
     template_name = 'editcategory.html'
     success_url = reverse_lazy('dashboard')
 
+    def get_queryset(self):
+        return Category.objects.filter(user=self.request.user)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['action'] = 'Edit Category'
         return context
 
-        def form_valid(self, form):
-            response = super().form_valid(form)
-            messages.success(self.request, 'Category updated successfully!')
-            return response
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Category updated successfully!', extra_tags='action')
+        return response

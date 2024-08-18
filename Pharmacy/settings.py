@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-&xx@bhmyf^b@69w&czr*9hu@9j@c+z@z8u9!t#qprge=eapp&8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.vercel.app', 'django-pharmacy-inventory-system.vercel.app', '.now.sh','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['.vercel.app', 'django-pharmacy-inventory-system.vercel.app', '.now.sh','127.0.0.1','localhost', 'http://127.0.0.1:8000/']
 
 
 # Application definition

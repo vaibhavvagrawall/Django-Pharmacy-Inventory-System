@@ -1,15 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container">
-    <a href="{% url 'dashboard' %}" class="btn btn-outline-primary my-3">Go Back</a>
+<div class="container mt-4">
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-primary btn-lg px-4 py-2 mb-3">Go Back</a>
     <div class="row justify-content-center">
-        <form method="POST" class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto mt-5">
-            {% csrf_token %}
-            <h1 class="fw-light text-center">Are you sure you want to delete the item "{{ item.name }}"?</h1>
-            <div class="text-center mt-4">
-                <button type="submit" class="btn btn-outline-danger">Delete</button>
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card border-light shadow-lg">
+                <div class="card-header bg-danger text-white text-center py-3">
+                    <h2 class="mb-0">Delete Item</h2>
+                </div>
+                <div class="card-body p-4 text-center">
+                    <h3 class="fw-light">Are you sure you want to delete the item "{{ item.name }}"?</h3>
+                    <h4 class="fw-light">This action cannot be undone.</h4>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mt-4 d-flex justify-content-center">
+                            <button type="submit" class="btn btn-outline-danger btn-lg px-4 py-2 me-2">
+                                Delete Item
+                            </button>
+                            <a href="{% url 'dashboard' %}" class="btn btn-outline-primary btn-lg px-4 py-2">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 {% endblock content %}

@@ -2,36 +2,52 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
     <div class="row justify-content-center">
-        <div class="col-12 col-sm-10 col-md-8 col-lg-6">
-            <h1 class="text-center mb-4">Sign Up</h1>
-            {% if form.errors %}
-                <div class="alert-container mb-4">
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                            <div class="alert alert-danger">
-                                <strong>{{ error|escape }}</strong>
-                            </div>
-                        {% endfor %}
-                    {% endfor %}
-                    {% for error in form.non_field_errors %}
-                        <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
-                        </div>
-                    {% endfor %}
+        <!-- Adjusted column widths for increased card width -->
+        <div class="col-12 col-md-9 col-lg-7">
+            <div class="card border-light shadow-lg">
+                <div class="card-header bg-primary text-white text-center py-2">
+                    <h3 class="mb-0">Sign Up</h3>
                 </div>
-            {% endif %}
+                <div class="card-body p-3">
+                    {% if form.errors %}
+                        <div class="alert-container mb-3">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <div class="alert alert-danger">
+                                        <strong>{{ error|escape }}</strong>
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
 
-            <form method="post">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <button class="btn btn-outline-primary btn-block mt-3" type="submit">Sign Up</button>
-            </form>
-            <div class="pt-3 text-center">
-                <small class="text-muted">Already Have an Account?
-                    <a href="{% url 'login' %}" class="ml-2">Sign In</a>
-                </small>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        
+                        <!-- Sign Up Button centered -->
+                        <div class="text-center mt-3">
+                            <button type="submit" class="btn btn-outline-primary btn-lg px-3 py-1 w-100">
+                                Sign Up
+                            </button>
+                        </div>
+
+                        <!-- Already have an account section aligned to the left -->
+                        <div class="d-flex justify-content-start align-items-center mt-4">
+                            <h6 class="text-muted mb-0 me-2">Already have an account?</h6>
+                            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm px-3 py-1">
+                                Sign In
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

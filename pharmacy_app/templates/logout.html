@@ -1,20 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Log Out Confirmation</h1>
+<div class="container mt-4">
+    <a href="{% url 'profile' %}" class="btn btn-outline-primary btn-lg px-4 py-2 mb-3">Go Back</a>
     <div class="row justify-content-center">
-        <form method="post" class="col-12 col-sm-10 col-md-8 col-lg-6">
-            {% csrf_token %}
-            <div class="card border-0 shadow-sm rounded p-3">
-                <h2 class="fw-light text-center">Are you sure you want to log out?</h2>
-                <p class="text-center fw-light">You will be logged out of your account, and any unsaved changes will be lost.</p>
-                <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-outline-danger me-2">Log Out</button>
-                    <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Cancel</a>
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card border-light shadow-lg">
+                <div class="card-header bg-danger text-white text-center py-3">
+                    <h2 class="mb-0">Log Out</h2>
+                </div>
+                <div class="card-body p-4 text-center">
+                    <h3 class="fw-light">Are you sure you want to log out?</h3>
+                    <p class="fw-light">You will be logged out of your account, and any unsaved changes will be lost.</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mt-4 d-flex justify-content-center">
+                            <button type="submit" class="btn btn-outline-danger btn-lg px-4 py-2 me-2">
+                                Log Out
+                            </button>
+                            <a href="{% url 'dashboard' %}" class="btn btn-outline-primary btn-lg px-4 py-2">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 {% endblock content %}
