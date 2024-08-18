@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&xx@bhmyf^b@69w&czr*9hu@9j@c+z@z8u9!t#qprge=eapp&8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['.vercel.app', 'django-pharmacy-inventory-system.vercel.app', '.now.sh']
+ALLOWED_HOSTS = ['.vercel.app', 'django-pharmacy-inventory-system.vercel.app', '.now.sh','127.0.0.1','localhost']
 
 
 # Application definition
@@ -76,17 +76,14 @@ WSGI_APPLICATION = 'Pharmacy.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-import pymysql
-pymysql.install_as_MySQLdb()
-
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql.connector.django',
-        'NAME': 'PHARMACY_INVENTORY',
-        'USER': 'root',
-        'PASSWORD': 'bANSAL1809',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'LgGyjUIWaWTOBiVSmmQjzducwyCJQWvt',
+        'HOST': 'postgres.railway.internal',
+        'PORT': '5432',
     }
 }
 
