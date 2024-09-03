@@ -33,3 +33,7 @@ The project uses a virtual environment located inside the Pharmacy directory:
 - **Pharmacy**: Project root directory.
 - **pharma_env**: Virtual Environment.
 - **Pharmacy_app**: Django App.
+
+## Live Demo
+[Pharmacy Management System - Live Demo](https://django-pharmacy-inventory-system.vercel.app/)
+
